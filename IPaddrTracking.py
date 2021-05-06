@@ -54,25 +54,31 @@ class IPTrack(object):
 	def clear(self):
 		self.ipsObj.clearIps()
 		
+def main():
+	""" Initialization """
+	ips = IPs()
+	ipTrack = IPTrack(ips)
 
-""" Initialization """
-ips = IPs()
-ipTrack = IPTrack(ips)
+	""" call request_handled func """
+	ipTrack.request_handled('1.2.3.4')
+	ipTrack.request_handled('2.3.4.5')
+	ipTrack.request_handled('2.3.4.5')
+	ipTrack.request_handled('3.4.5.6')
 
-""" test cases, call request_handled func """
-ipTrack.request_handled('1.2.3.4')
-ipTrack.request_handled('2.3.4.5')
-ipTrack.request_handled('2.3.4.5')
-ipTrack.request_handled('3.4.5.6')
+	""" there are 3 ips address requested """
+	print(ips.ips)
+	assert len(ips.ips) == 3
 
-""" print out all of ips address requested """
-print(ips.ips)
+	""" print out top 100 IP addresses """
+	print(ipTrack.top100())
+	""" confirm IP addresse is sotred correctly """
+	assert ipTrack.top100()[0] == '2.3.4.5'
 
-""" print out top 100 IP addresses """
-print(ipTrack.top100())
+	""" clear the all IP stored """
+	ipTrack.clear()
+	""" confirm the in-memory storage is empty """
+	assert ips.ips == {}
 
-""" clear the all IP stored """
-ipTrack.clear()
 
-""" confirm the in-memory storage is empty """
-print(ips.ips)
+if __name__ == '__main__':
+	main()	
